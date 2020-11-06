@@ -10,7 +10,7 @@ DeepFilter is a metaproteomics-filtering tool based on deep learning model. It i
 * CUDA Version 10.2
 ### Requirement
 * Linux operation system
-* GPU memory should be more than 8 Gb for inference mode otherwise the batchsize should be adjuested
+* GPU memory should be more than 8 Gb for inference mode otherwise the batchsize should be adjusted
 * GPU memory should be more than 20 Gb for training mode
 
 ## Toy example of DeepFilter
