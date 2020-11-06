@@ -60,7 +60,7 @@ python train_process.py OSU_D2_FASP_Elite_02262014_01.ms2 expEncode.txt
 ```
 * theory_process.py and Sipros_OpenMP: the python script and the binary file are combined togethoer to generate the isotope distribution of the PSM candidates. The usage:
 ```
-python theory_process.py OSU_D2_FASP_Elite_022252014_1.pin idx.txt charge.txt peptide.fasta feature,txt
+python theory_process.py OSU_D2_FASP_Elite_022252014_1.pin idx.txt charge.txt peptide.fasta feature.txt
 ./Sipros_OpenMP -i1 idx.txt -i2 charge.txt -i3 peptide.fasta -i4 theoryEncode.txt
 
 ```
