@@ -21,11 +21,11 @@ The toy example given is to help getting a quick start. The files of toy example
 * temp_model/ directory -> include three models, the file "benchmark.pt" is the pre-trained model for inference
 * The fasta file for filtering is attached in the link https://myunt-my.sharepoint.com/:u:/r/personal/xuan_guo_unt_edu/Documents/Shichao/Metaproteomics%20Deep%20Learning/testdata.fasta.zip?csf=1&web=1&e=c8as9q
 The file inference.sh is to rescore the PSM from exsisting database searching results, the use is:
-'''
+```
 #!/bin/bash
 ./inference.sh -in testData_1.ms2 -s test.data.pin -m temp_model/benchmark.pt -o test.rescore.txt
 
-'''
+```
 *  test.rescore.txt -> The rescore results for PSMs
 *  testidx.txt, testcharge.txt, testpeptide.fasta are processing files to generate isotope distribution
 
