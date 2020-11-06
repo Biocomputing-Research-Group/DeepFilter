@@ -7,6 +7,17 @@ DeepFilter is a metaproteomics-filtering tool based on deep learning model. It i
 * numpy >= 1.17.2
 * pytorch(gpu version) >= 1.4.0
 * CUDA Version 10.2
+#### Requirement
+* Linux operation system
+* GPU memory should be more than 8 Gb for inference mode otherwise the batchsize should be adjuested
+* GPU memory should be more than 20 Gb for training mode
 
-## How to use DeepFilter
+## Toy example of DeepFilter
+The toy example given is to help getting a quick start. The files of toy example include:
+* testData_1.ms2 -> experimental tandem mass spectrum data
+* test.data.pin -> database searching results by Comet
+* temp_model/ directory -> include three models, the file "benchmark.pt" is the pre-trained model for inference
+* 
+
+
 
