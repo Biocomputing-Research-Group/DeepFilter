@@ -17,8 +17,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import sys
-from DataUtils import DefineDataset
-from DataUtils import readData
+from DataUtils import DefineTestDataset
+from DataUtils import readTestData
 from model import CNN
 from model import Net
 from model import mymodel
@@ -49,9 +49,9 @@ def test_model(model, test_data, device):
 
 def main(iexp,itheory,ifeature,output,fmodel):
     start = time.time()
-    L, idset = readData(iexp,itheory,ifeature)
+    L, idset = readTestData(iexp,itheory,ifeature)
     L_idx = [i for i in range(len(L))]
-    test_data = DefineDataset(L_idx, L)
+    test_data = DefineTestDataset(L_idx, L)
     device = torch.device("cuda")
     model = mymodel(CNN(), Net())
     model.cuda()

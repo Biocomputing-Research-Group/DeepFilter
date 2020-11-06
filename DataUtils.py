@@ -96,7 +96,6 @@ def LabelToDict(fp):
 
     return label_dic
 
-
 def readData(expPrefix, theoryPrefix, featurePrefix, LabelPrefix, filenum):
     L = []
     Y = []
@@ -133,6 +132,39 @@ def readData(expPrefix, theoryPrefix, featurePrefix, LabelPrefix, filenum):
         D_Label = dict()
 
     return L, Y, weight
+
+def readTestData(iexp,itheory,ifeature):
+    L=[]
+    idx=[]
+    filename=itheory
+    f=open(filename)
+    D_theory=theoryToDict(f)
+    filename=ifeature
+    f=open(filename)
+    D_feature=featureToDict(f)
+    filename=iexp
+    f=open(filename)
+    D_exp=expToDict(f)
+    for j in D_theory.keys():
+        l = []
+        if j[:-4] not in D_exp.keys():
+            idx.append(False)
+            continue
+
+        l.append(D_exp[j[:-4]])
+        l.append(D_theory[j])
+        l.append(D_feature[j])
+        L.append(l)
+        idx.append(j)
+
+    D_theory = dict()
+    D_exp = dict()
+    D_feature = dict()
+
+    return L, idx
+
+        
+        
 
 
 class DefineDataset(Data.Dataset):
@@ -204,4 +236,68 @@ class DefineDataset(Data.Dataset):
         weight = self.weight[idx]
         return X, y, feature, weight
 
+class DefineTestDataset(Data.Dataset):
+    def __init__(self, X_index, L):
+        self.X_index = X_index
+        self.L = L
+
+    def __len__(self):
+        return len(self.X_index)
+
+    def __getitem__(self, idx):
+        idx = self.X_index[idx]
+        expvec = self.L[idx][0]
+        theoryvec = self.L[idx][1]
+        addFeatvec = self.L[idx][2]
+
+        width = 0.5
+        count = 0
+        construction = []
+        for i in range(10):
+            s = []
+            for j in range(3600):
+                s.append(0)
+            construction.append(s)
+
+        for construction_id, chargeMZ in enumerate(expvec):
+            # m/z by charge is not exist
+            if len(chargeMZ) == 0:
+                continue
+            for line_id, line in enumerate(chargeMZ):
+                if line_id % 2 == 0:
+                    matrix_idx = int((line - 100) / width)
+                    if (line > 1899.9) | (line < 100):
+                        flag = 1
+                    else:
+                        flag = 0
+                else:
+                    if flag == 0:
+                        if construction_id == 3:
+                            construction[0][matrix_idx] = construction[0][matrix_idx] + line
+                        else:
+                            construction[construction_id + 1][matrix_idx] = construction[construction_id + 1][
+                                                                                matrix_idx] + line
+
+        for construction_id, chargeMZ in enumerate(theoryvec):
+            # m/z by charge is not exist
+            if len(chargeMZ) == 0:
+                continue
+            for line_id, line in enumerate(chargeMZ):
+                if line_id % 2 == 0:
+                    matrix_idx = int((line - 100) / width)
+                    if (line > 1899.9) | (line < 100):
+                        flag = 1
+                    else:
+                        flag = 0
+                else:
+                    if flag == 0:
+                        construction[construction_id + 4][matrix_idx] = construction[construction_id + 4][
+                                                                            matrix_idx] + line
+
+        construction = np.asarray(construction, dtype=float)
+        transformer = Normalizer()
+        construction = transformer.fit_transform(construction)
+        X = torch.FloatTensor([construction])
+        feature = torch.FloatTensor(addFeatvec)
+        return X, feature
 

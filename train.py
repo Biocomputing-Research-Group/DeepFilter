@@ -20,6 +20,7 @@ from DataUtils import readData
 from model import CNN
 from model import Net
 from model import mymodel
+from model import my_loss
 
 def get_time_dif(start_time):
     end_time = time.time()
@@ -31,7 +32,7 @@ def evaluate(data, model, loss, device):
     # Evaluation, return accuracy and loss
 
     model.eval()  # set mode to evaluation to disable dropout
-    data_loader = Data.DataLoader(data,batch_size=256)
+    data_loader = Data.DataLoader(data,batch_size=6)
 
     data_len = len(data)
     total_loss = 0.0
@@ -84,7 +85,7 @@ def test_model(model, test_data, device):
     print("Testing...")
     model.eval()
     start_time = time.time()
-    test_loader = Data.DataLoader(test_data,batch_size=256)
+    test_loader = Data.DataLoader(test_data,batch_size=6)
 
     model.load_state_dict(torch.load(
         'cnn_pytorch.pt', map_location=lambda storage, loc: storage))
@@ -139,7 +140,7 @@ def train_model(x_train, x_test, L, Y, weight):
         batch_count = 0
         batch_time = time.time()
         model.train()
-        train_loader = Data.DataLoader(train_data,batch_size=256)
+        train_loader = Data.DataLoader(train_data,batch_size=6)
         start = time.time()
         for x_batch, y_batch, feature, weight in train_loader:
             end = time.time()

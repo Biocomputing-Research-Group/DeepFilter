@@ -164,9 +164,27 @@ def chargeDetection(scan, key, return_dict):
 
 
 def writeMzs(mzs, fout):
+    c1 = ''
+    c2 = ''
+    c3 = ''
+    c4 = ''
     for peak in mzs:
-        s = str(peak[0]) + ' ' + str(peak[1]) + ' ' + str(peak[2]) + '\n'
-        fout.write(s)
+        if peak[2] == 1:
+            c1 += str(peak[0]) + ' ' + str(peak[1])+' '
+        if peak[2] == 2:
+            c2 += str(peak[0]) + ' ' + str(peak[1])+' '
+        if peak[2] == 3:
+            c3 += str(peak[0]) + ' ' + str(peak[1])+' '
+        if peak[2] == 0:
+            c4 += str(peak[0]) + ' ' + str(peak[1])+' '
+
+    fout.write(c1)
+    fout.write('\n')
+    fout.write(c2)
+    fout.write('\n')
+    fout.write(c3)
+    fout.write('\n')
+    fout.write(c4)
     fout.write('\n')
 
 
@@ -179,12 +197,12 @@ def exp(msfile, outfile):
     fileinfo = name.split('_')
     idx = int(fileinfo[-1])
     print('process: file ' + msfile)
-    start=time.time()
+    start = time.time()
     msdict = MzDLoad(msfile, idx)
-    end=time.time()
-    print('read data:'+str(end-start))
+    end = time.time()
+    print('read data:' + str(end - start))
     # 3. detect and generate
-    start=time.time()
+    start = time.time()
     manager = Manager()
     return_dict = manager.dict()
     processors = os.cpu_count()
@@ -194,16 +212,17 @@ def exp(msfile, outfile):
 
     pool.close()
     pool.join()
-    end=time.time()
-    print('charge detection:'+str(end-start))
+    end = time.time()
+    print('charge detection:' + str(end - start))
 
-    start=time.time()
+    start = time.time()
     with open(outfile, 'w') as f:
         for key in return_dict:
             f.write(key + '\n')
             writeMzs(return_dict[key], f)
-    end=time.time()
-    print('write data:'+str(end-start))
+    end = time.time()
+    print('write data:' + str(end - start))
+
 
 if __name__ == "__main__":
     msfile = sys.argv[1]
