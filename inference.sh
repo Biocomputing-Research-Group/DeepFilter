@@ -53,6 +53,6 @@ python train_process.py $inputfile $expEncode
 echo -e "Generate isotope distribution preprocessing files and 11 extra feature of each PSM\n"
 python theory_process.py $DBfile $tempidx $tempcharge $temppeptide $tempfeature
 echo -e "Generate isotope distribution for each peptide\n"
-./Sipros_OpenMP -i1 $tempidx -i2 $tempcharge -i3 $temppeptide -i4 $theoryEncode
+./Sipros_OpenMP -i1 $tempidx -i2 $tempcharge -i3 $temppeptide -i4 $theoryEncode -c SiprosConfig.cfg 
 echo -e "Rescore the PSMs\n"
 python Predict.py $expEncode $theoryEncode $tempfeature $outputfile $model
